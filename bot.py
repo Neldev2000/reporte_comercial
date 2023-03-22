@@ -42,6 +42,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 async def cargado_kits(update: Update, context: ContextTypes.DEFAULT_TYPE):
     num = int(update.message.text)
+    print(f'Kits en almacen: {num}')
     chat_id = update.effective_chat.id
     if chat_id == chats['Miguel']:
         print(num)
@@ -79,12 +80,15 @@ def construccion_mensaje():
     """
     return result
 async def envio_reporte(context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=chats['Julio'], text=construccion_mensaje())
+    msg = construccion_mensaje()
+    print(msg)
+    await context.bot.send_message(chat_id=chats['Julio'], text=msg)
 def set_timer_gerente(update, context):
     context.job_queue.run_daily(envio_reporte, days=(0, 2, 4), time=datetime.time(hour=16, minute=45, second=0), context=update.message.chat_id)
 
 async def recordatorio_kits(context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=chats['Miguel'], text="Por favor recuerda cargar el numero de kits😎😎")
+    msg =  'Por favor recuerda cargar el numero de kits😎😎'
+    await context.bot.send_message(chat_id=chats['Miguel'], text=msg)
 def set_timer_almacen(update, context):
     context.job_queue.run_daily(envio_reporte, days=(0, 2, 4), time=datetime.time(hour=15, minute=30, second=0), context=update.message.chat_id)
 
