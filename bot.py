@@ -86,7 +86,7 @@ async def envio_reporte(context: ContextTypes.DEFAULT_TYPE):
 def set_timer_gerente(update, context):
     context.job_queue.run_daily(envio_reporte, days=(0, 2, 4), time=datetime.time(hour=16, minute=45, second=0), context=update.message.chat_id)
 
-async def envio_auxiliar(update: Update, context: ContextTypes.DEFAULT_TYPES):
+async def envio_auxiliar(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = construccion_mensaje()
     print(f"Auxiliar: \n\n{msg}")
     await context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
