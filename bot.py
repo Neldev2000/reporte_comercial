@@ -86,6 +86,11 @@ async def envio_reporte(context: ContextTypes.DEFAULT_TYPE):
 def set_timer_gerente(update, context):
     context.job_queue.run_daily(envio_reporte, days=(0, 2, 4), time=datetime.time(hour=16, minute=45, second=0), context=update.message.chat_id)
 
+async def envio_auxiliar(update: Update, context: ContextTypes.DEFAULT_TYPES):
+    msg = construccion_mensaje()
+    print(f"Auxiliar: \n\n{msg}")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
+
 async def recordatorio_kits(context: ContextTypes.DEFAULT_TYPE):
     msg =  'Por favor recuerda cargar el numero de kits😎😎'
     await context.bot.send_message(chat_id=chats['Miguel'], text=msg)
@@ -96,11 +101,14 @@ if __name__ == '__main__':
     application = ApplicationBuilder().token('5893714044:AAHNgtoFnl_BKZQ2frmX4dc32t1SjFuI-74').build()
     
     start_handler = CommandHandler('start', start)
+    auxiliar_handler = CommandHandler('send', envio_auxiliar)
     set_gerente_handler = CommandHandler('set', set_timer_gerente)
     set_almacen_handler = CommandHandler('set_almacen', set_timer_almacen)
     echo_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), cargado_kits)
-    application.add_handler(start_handler)
     
+    application.add_handler(start_handler)
+    application.add_handler(auxiliar_handler)
+
     application.add_handler(set_gerente_handler)
     application.add_handler(set_almacen_handler)
 
