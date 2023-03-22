@@ -22,7 +22,7 @@ database_atlas = {
     'password' : '$K10F2#q6nt5'
 }
 chats = {
-    'Miguel' : 1397110563,
+    'Miguel' : 1427866381,
     'Julio'  : 457625276,
     'Nelson' : 1397110563
 }
@@ -89,7 +89,7 @@ def set_timer_almacen(update, context):
     context.job_queue.run_daily(envio_reporte, days=(0, 2, 4), time=datetime.time(hour=15, minute=30, second=0), context=update.message.chat_id)
 
 if __name__ == '__main__':
-    application = ApplicationBuilder().token('5724184904:AAFCMwQw5QJbLriGMhSBNyTK9azlHqlOe0A').build()
+    application = ApplicationBuilder().token('5893714044:AAHNgtoFnl_BKZQ2frmX4dc32t1SjFuI-74').build()
     
     start_handler = CommandHandler('start', start)
     set_gerente_handler = CommandHandler('set', set_timer_gerente)
