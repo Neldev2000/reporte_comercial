@@ -1,0 +1,6 @@
+commands:
+  my-command:
+    image: python:3.9
+    steps:
+      - run: pip install -r requirements.txt
+      - run: python new_bot.py

@@ -89,7 +89,7 @@ async def mensaje_auxiliar(client, message):
     if message.text == '/send':
         msg = construccion_mensaje()
         await client.send_message(message.chat.id, msg)
-    elif message.chat.id == chats['Nelson']:
+    elif message.chat.id == chats['Miguel']:
         num = int(message.text)
         print(num)
         conn = pg.connect(**database_stock)
@@ -103,7 +103,7 @@ async def mensaje_auxiliar(client, message):
         cur.close()
         conn.close()
 
-        await client.send_message(chats['Nelson'], 'Mensaje recibido😎😎')
+        await client.send_message(chats['Miguel'], 'Mensaje recibido😎😎')
 
 async def enviar_reporte():
     msg = construccion_mensaje()
