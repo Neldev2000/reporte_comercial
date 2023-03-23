@@ -1,6 +1,6 @@
 import logging
 
-from datetime import datetime, timedelta
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 import psycopg2 as pg
 import pandas as pd
@@ -44,7 +44,6 @@ api = {
     'token' : '5893714044:AAHNgtoFnl_BKZQ2frmX4dc32t1SjFuI-74'
 }
 app = Client("my_account", api_id = api['id'], api_hash=api['hash'], bot_token=api['token'])
-
 @app.on_message()
 def obtener_kits(client, message):
     if message.chat.id == chats['Miguel']:
@@ -89,20 +88,21 @@ def construccion_mensaje():
     """
     return result
 
-fechas_reporte = []
-fechas_almacen = []
-dias = 1000
-hoy = datetime.now()
-for i in range(dias):
-    fecha = hoy + timedelta(days=i)
-    if fecha.weekday() in [0,2,4]:
-        fechas_reporte.append(datetime(fecha.year, fecha.month, fecha.day, 16,45))
-        fechas_almacen.append(datetime(fecha.year, fecha.month, fecha.day, 16,00))
 
-with app:
-    for fecha in fechas_reporte:
-        app.send_message(chat_id = chats['Julio'], text=construccion_mensaje(), schedule_date=fecha.timestamp())
-    for fecha in fechas_almacen:
-        app.send_message(chat_id = chats['Julio'], text="Por favor introduce el numero de kits 😎😎", schedule_date=fecha.timestamp())
+async def enviar_reporte():
+    msg = construccion_mensaje()
+    chat_id = chats['Julio']
+    await app.send_message(chat_id = chat_id, text=msg)
 
+async def enviar_recordatorio():
+    msg = 'Recuerda cargar el numero de kits.'
+    chat_id = chats['Miguel']
+    await app.send_message(chat_id=chat_id, text=msg)
+
+
+scheduler = AsyncIOScheduler()
+scheduler.add_job(enviar_reporte, "cron",day_of_week='mon,wed,fri', hour='16', minute='45')
+scheduler.add_job(enviar_recordatorio, "cron",day_of_week='mon,wed,fri', hour='16', minute='00')
+
+scheduler.start()
 app.run()
