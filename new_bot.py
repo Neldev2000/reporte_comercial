@@ -6,27 +6,18 @@ import psycopg2 as pg
 import pandas as pd
 
 from pyrogram import Client
-from pyrogram.types import Message
 
-database_stock = {
-    'dbname' : "kits_instalacion",
-    'host' : 'dpg-cgd11oceoogljts1sfjg-a.oregon-postgres.render.com',
-    'port' : 5432,
-    'user' : 'kits_instalacion_user',
-    'password' : 'nwaCknYUE8SVgCVx6Eh0LQceYdehSuP6'
-}
-database_atlas = {
-    'dbname' : "tenant_viginet_yzi0ia1v",
-    'host' : '190.97.235.2',
-    'port' : 5432,
-    'user' : 'consultor01',
-    'password' : '$K10F2#q6nt5'
-}
-# miguel 1427866381
+import os
+# almacen 1427866381
 chats = {
-    'Miguel' : 1427866381,
-    'Julio'  : 457625276,
-    'Nelson' : 1397110563
+    'almacen' : os.environ.get('ALMACEN_ID'),
+    'gerencia'  : os.environ.get('GERENCIA_ID'),
+    'test' : os.environ.get('TEST_ID')
+}
+api = {
+    'id' : os.environ.get('API_ID'),
+    'hash' : os.environ.get('API_HASH'),
+    'token' : os.environ.get('API_TOKEN')
 }
 with open('queries/reporte.sql') as f, open('queries/kits.sql') as r:
     reporte = f.read()
@@ -39,15 +30,11 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-api = {
-    'id' : 15560437,
-    'hash' : 'b8215bf1fb018f7611f3e98cb3f98a3d',
-    'token' : '5893714044:AAHNgtoFnl_BKZQ2frmX4dc32t1SjFuI-74'
-}
+
 app = Client("my_account", api_id = api['id'], api_hash=api['hash'], bot_token=api['token'])
 def construccion_mensaje():
-    conn_stock = pg.connect(**database_stock)
-    conn_reporte = pg.connect(**database_atlas)
+    conn_stock = pg.connect(os.environ.get('STOCK_URL'))
+    conn_reporte = pg.connect(os.environ.get('SALES_URL'))
     data_stock = pd.read_sql(sql=kits, con=conn_stock)
     data_atlas = pd.read_sql(sql = reporte, con = conn_reporte)
     data = data_atlas.join(data_stock.set_index('fecha'), on = 'fecha', lsuffix='', rsuffix='')
@@ -65,34 +52,15 @@ def construccion_mensaje():
     """
     return result
 
-"""
-@app.on_message()
-async def obtener_kits(client, message):
-    if message.chat.id == chats['Miguel']:
-        num = int(message.text)
-        print(num)
-        conn = pg.connect(**database_stock)
-        cur = conn.cursor()
-        fecha = pd.Timestamp.now()
-        cur.execute('INSERT INTO kits_instalacion (fecha, kits) VALUES (%s, %s)', (fecha, num))
-        # Confirme los cambios
-        conn.commit()
-
-        # Cierre el cursor y la conexión
-        cur.close()
-        conn.close()
-
-        await client.send_message(chats['Miguel'], 'Mensaje recibido😎😎')  
-"""
 @app.on_message()
 async def mensaje_auxiliar(client, message):
     if message.text == '/send':
         msg = construccion_mensaje()
         await client.send_message(message.chat.id, msg)
-    elif message.chat.id == chats['Miguel']:
+    elif message.chat.id == chats['almacen']:
         num = int(message.text)
         print(num)
-        conn = pg.connect(**database_stock)
+        conn = pg.connect(os.environ.get('STOCK_URL'))
         cur = conn.cursor()
         fecha = pd.Timestamp.now()
         cur.execute('INSERT INTO kits_instalacion (fecha, kits) VALUES (%s, %s)', (fecha, num))
@@ -103,16 +71,16 @@ async def mensaje_auxiliar(client, message):
         cur.close()
         conn.close()
 
-        await client.send_message(chats['Miguel'], 'Mensaje recibido😎😎')
+        await client.send_message(chats['almacen'], 'Mensaje recibido😎😎')
 
 async def enviar_reporte():
     msg = construccion_mensaje()
-    chat_id = chats['Julio']
+    chat_id = chats['gerencia']
     await app.send_message(chat_id = chat_id, text=msg)
 
 async def enviar_recordatorio():
     msg = 'Recuerda cargar el numero de kits.'
-    chat_id = chats['Miguel']
+    chat_id = chats['almacen']
     await app.send_message(chat_id=chat_id, text=msg)
 
 
