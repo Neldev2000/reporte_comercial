@@ -22,6 +22,7 @@ database_atlas = {
     'user' : 'consultor01',
     'password' : '$K10F2#q6nt5'
 }
+# miguel 1427866381
 chats = {
     'Miguel' : 1427866381,
     'Julio'  : 457625276,
@@ -44,30 +45,6 @@ api = {
     'token' : '5893714044:AAHNgtoFnl_BKZQ2frmX4dc32t1SjFuI-74'
 }
 app = Client("my_account", api_id = api['id'], api_hash=api['hash'], bot_token=api['token'])
-@app.on_message()
-def obtener_kits(client, message):
-    if message.chat.id == chats['Miguel']:
-        num = int(message.text)
-        print(num)
-        conn = pg.connect(**database_stock)
-        cur = conn.cursor()
-        fecha = pd.Timestamp.now()
-        cur.execute('INSERT INTO kits_instalacion (fecha, kits) VALUES (%s, %s)', (fecha, num))
-        # Confirme los cambios
-        conn.commit()
-
-        # Cierre el cursor y la conexión
-        cur.close()
-        conn.close()
-
-        client.send_message(chats['Miguel'], 'Mensaje recibido😎😎')  
-
-@app.on_message()
-def mensaje_auxiliar(client, message):
-    if message.text == '/send':
-        msg = construccion_mensaje()
-        client.send_message(message.chat.id, msg)  
-
 def construccion_mensaje():
     conn_stock = pg.connect(**database_stock)
     conn_reporte = pg.connect(**database_atlas)
@@ -88,6 +65,45 @@ def construccion_mensaje():
     """
     return result
 
+"""
+@app.on_message()
+async def obtener_kits(client, message):
+    if message.chat.id == chats['Miguel']:
+        num = int(message.text)
+        print(num)
+        conn = pg.connect(**database_stock)
+        cur = conn.cursor()
+        fecha = pd.Timestamp.now()
+        cur.execute('INSERT INTO kits_instalacion (fecha, kits) VALUES (%s, %s)', (fecha, num))
+        # Confirme los cambios
+        conn.commit()
+
+        # Cierre el cursor y la conexión
+        cur.close()
+        conn.close()
+
+        await client.send_message(chats['Miguel'], 'Mensaje recibido😎😎')  
+"""
+@app.on_message()
+async def mensaje_auxiliar(client, message):
+    if message.text == '/send':
+        msg = construccion_mensaje()
+        await client.send_message(message.chat.id, msg)
+    elif message.chat.id == chats['Nelson']:
+        num = int(message.text)
+        print(num)
+        conn = pg.connect(**database_stock)
+        cur = conn.cursor()
+        fecha = pd.Timestamp.now()
+        cur.execute('INSERT INTO kits_instalacion (fecha, kits) VALUES (%s, %s)', (fecha, num))
+        # Confirme los cambios
+        conn.commit()
+
+        # Cierre el cursor y la conexión
+        cur.close()
+        conn.close()
+
+        await client.send_message(chats['Nelson'], 'Mensaje recibido😎😎')
 
 async def enviar_reporte():
     msg = construccion_mensaje()

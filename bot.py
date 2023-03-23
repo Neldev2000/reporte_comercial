@@ -70,13 +70,13 @@ def construccion_mensaje():
         Sucursal Merida
     -------------------
 
-        1️⃣*Acumulado de ventas del 1 al n de mes corriente:* {data['ventas_mes'].values[0]}
+        1️⃣ *Acumulado de ventas del 1 al n de mes corriente:* {data['ventas_mes'].values[0]}
 
-        2️⃣*Acumulado de instalaciones realizadas (del 1 al n de mes corriente):* {data['instalaciones_mes'].values[0]}
+        2️⃣ *Acumulado de instalaciones realizadas (del 1 al n de mes corriente):* {data['instalaciones_mes'].values[0]}
 
-        3️⃣*Instalaciones pendientes:* {data['pendientes'].values[0]}
+        3️⃣ *Instalaciones pendientes:* {data['pendientes'].values[0]}
 
-        4️⃣*Kit de instalación disponible en almacen al día de hoy 17 de marzo:* {data['kits'].values[0]}
+        4️⃣ *Kit de instalación disponible en almacen al día de hoy 17 de marzo:* {data['kits'].values[0]}
     """
     return result
 async def envio_reporte(context: ContextTypes.DEFAULT_TYPE):
