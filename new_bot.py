@@ -1,7 +1,5 @@
 import logging
 
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-
 import psycopg2 as pg
 import pandas as pd
 
@@ -50,7 +48,7 @@ def construccion_mensaje():
     return result
 
 @app.on_message()
-async def mensaje_auxiliar(client, message):
+def mensaje_auxiliar(client, message):
     if message.text == '/send':
         msg = construccion_mensaje()
         await client.send_message(message.chat.id, msg)
@@ -70,20 +68,4 @@ async def mensaje_auxiliar(client, message):
 
         await client.send_message(chats['almacen'], 'Mensaje recibido😎😎')
 
-async def enviar_reporte():
-    msg = construccion_mensaje()
-    chat_id = chats['gerencia']
-    await app.send_message(chat_id = chat_id, text=msg)
-
-async def enviar_recordatorio():
-    msg = 'Recuerda cargar el numero de kits.'
-    chat_id = chats['almacen']
-    await app.send_message(chat_id=chat_id, text=msg)
-
-
-scheduler = AsyncIOScheduler()
-scheduler.add_job(enviar_reporte, "cron",day_of_week='mon,wed,fri', hour='16', minute='45')
-scheduler.add_job(enviar_recordatorio, "cron",day_of_week='mon,wed,fri', hour='16', minute='00')
-
-scheduler.start()
 app.run()
