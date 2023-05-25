@@ -20,6 +20,7 @@ api = {
 }
 # Create a Telegram client
 async def main():
+    print(api['id'])
     client = telethon.TelegramClient('my_username', api_id=api['id'], api_hash=api['hash'])
 
     # Login to Telegram
@@ -40,7 +41,4 @@ async def main():
 
     # Close the client
     await client.disconnect()
-if __name__ == '__main__':
-    # Run the main function
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+asyncio.run(main())
