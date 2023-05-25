@@ -51,21 +51,5 @@ def construccion_mensaje():
 def mensaje_auxiliar(client, message):
     if message.text == '/send':
         msg = construccion_mensaje()
-        await client.send_message(message.chat.id, msg)
-    elif message.chat.id == chats['almacen']:
-        num = int(message.text)
-        print(num)
-        conn = pg.connect(os.environ.get('STOCK_URL'))
-        cur = conn.cursor()
-        fecha = pd.Timestamp.now()
-        cur.execute('INSERT INTO kits_instalacion (fecha, kits) VALUES (%s, %s)', (fecha, num))
-        # Confirme los cambios
-        conn.commit()
-
-        # Cierre el cursor y la conexión
-        cur.close()
-        conn.close()
-
-        await client.send_message(chats['almacen'], 'Mensaje recibido😎😎')
-
+        client.send_message(message.chat.id, msg)
 app.run()
