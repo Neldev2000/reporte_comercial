@@ -1,4 +1,5 @@
 import telethon
+from telethon.events import NewMessage
 import logging
 import psycopg2 as pg
 import pandas as pd
@@ -24,7 +25,7 @@ client = telethon.TelegramClient('my_username', api_id=api['id'], api_hash=api['
 client.connect()
 
 # Register a handler for incoming messages
-@client.on(events.NewMessage)
+@client.on(NewMessage)
 async def handler(event):
     # Check the message text
     if event.text == 'reporte':
