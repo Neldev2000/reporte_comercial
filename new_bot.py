@@ -1,5 +1,5 @@
 import logging
-
+import uvloop
 import psycopg2 as pg
 import pandas as pd
 
@@ -29,6 +29,7 @@ logging.basicConfig(
 )
 
 
+uvloop.install()
 app = Client("my_account", api_id = api['id'], api_hash=api['hash'], bot_token=api['token'])
 def construccion_mensaje():
     conn_reporte = pg.connect(os.environ.get('SALES_URL'))
