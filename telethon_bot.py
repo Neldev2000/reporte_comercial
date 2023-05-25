@@ -4,7 +4,7 @@ import logging
 import psycopg2 as pg
 import pandas as pd
 
-
+import asyncio
 
 import os
 # almacen 1427866381
