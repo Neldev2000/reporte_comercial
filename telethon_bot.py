@@ -29,8 +29,10 @@ async def main():
     @client.on(NewMessage)
     async def handler(event):
         # Check the message text
+        print(event.text)
         if event.text == 'reporte':
             # Send a message back to the user
+
             await event.respond('Hello!')
         elif event.text == 'goodbye':
             # Send a message back to the user
