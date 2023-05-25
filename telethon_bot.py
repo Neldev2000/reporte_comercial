@@ -22,7 +22,7 @@ api = {
 client = telethon.TelegramClient('my_username', api_id=api['id'], api_hash=api['hash'])
 
 # Login to Telegram
-client.connect()
+await client.connect()
 
 # Register a handler for incoming messages
 @client.on(NewMessage)
