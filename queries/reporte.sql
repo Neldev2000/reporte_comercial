@@ -1,4 +1,4 @@
-with variables (sucursal, tiempo) as (values(1, 'month')),
+with variables (sucursal, tiempo) as (values(10, 'month')),
 contratos as (
 	select 
 		date_trunc( (select tiempo from variables), c.created_at )::date as fecha,
