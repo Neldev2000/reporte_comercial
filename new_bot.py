@@ -33,9 +33,8 @@ logging.basicConfig(
 
 app = Client("my_account", api_id = api['id'], api_hash=api['hash'], bot_token=api['token'])
 def construccion_mensaje():
-    conn_stock = pg.connect(os.environ.get('STOCK_URL'))
     conn_reporte = pg.connect(os.environ.get('SALES_URL'))
-    data_stock = pd.read_sql(sql=kits, con=conn_stock)
+   
     data_atlas = pd.read_sql(sql = reporte, con = conn_reporte)
     data = data_atlas.join(data_stock.set_index('fecha'), on = 'fecha', lsuffix='', rsuffix='')
     result = f"""
