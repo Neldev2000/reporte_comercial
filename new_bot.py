@@ -36,7 +36,7 @@ def construccion_mensaje():
     conn_reporte = pg.connect(os.environ.get('SALES_URL'))
    
     data_atlas = pd.read_sql(sql = reporte, con = conn_reporte)
-    data = data_atlas.join(data_stock.set_index('fecha'), on = 'fecha', lsuffix='', rsuffix='')
+    data = data_atlas
     result = f"""
         Sucursal Merida
     -------------------
