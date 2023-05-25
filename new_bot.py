@@ -48,8 +48,8 @@ def construccion_mensaje():
     return result
 
 @app.on_message()
-def mensaje_auxiliar(client, message):
+async def mensaje_auxiliar(client, message):
     if message.text == '/send':
         msg = construccion_mensaje()
-        client.send_message(message.chat.id, msg)
+        await client.send_message(message.chat.id, msg)
 app.run()
