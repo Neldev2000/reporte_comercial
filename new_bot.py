@@ -47,8 +47,6 @@ def construccion_mensaje():
         2️⃣*Acumulado de instalaciones realizadas (del 1 al n de mes corriente):* {data['instalaciones_mes'].values[0]}
 
         3️⃣*Instalaciones pendientes:* {data['pendientes'].values[0]}
-
-        4️⃣*Kit de instalación disponible en almacen al día de hoy 17 de marzo:* {data['kits'].values[0]}
     """
     return result
 
