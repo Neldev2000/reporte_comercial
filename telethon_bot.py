@@ -1,6 +1,5 @@
 import telethon
 import logging
-import uvloop
 import psycopg2 as pg
 import pandas as pd
 
